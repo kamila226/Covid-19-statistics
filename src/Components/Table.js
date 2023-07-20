@@ -2,98 +2,8 @@ import { useEffect, useState } from "react";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import Filter from "./Filter";
 
-export default function Table() {
-  const [countryData, setData] = useState([
-    {
-      country: "",
-      cases: "",
-      deaths: "",
-      totalCases: "",
-      totalDeaths: "",
-      casesOn1000: "",
-      deathsOn1000: "",
-    },
-  ]);
-  const [filteredData, setFilteredData] = useState([
-    {
-      country: "",
-      cases: "",
-      deaths: "",
-      totalCases: "",
-      totalDeaths: "",
-      casesOn1000: "",
-      deathsOn1000: "",
-    },
-  ]);
-
-  useEffect(() => {
-    fetch("https://opendata.ecdc.europa.eu/covid19/casedistribution/json/")
-      .then((res) => res.json())
-      .then((data) => {
-        const maxDate = new Date(
-          Math.max(
-            ...data.records.map((obj) => {
-              const { day, month, year } = obj;
-              const date = new Date(`${year}-${month}-${day}`);
-              return new Date(date);
-            })
-          )
-        );
-        const minDate = new Date(
-          Math.min(
-            ...data.records.map((obj) => {
-              const { day, month, year } = obj;
-              const date = new Date(`${year}-${month}-${day}`);
-              // console.log(new Date(obj.dateRep));
-              return new Date(date);
-            })
-          )
-        );
-        setData(getCountryData(data.records, minDate, maxDate));
-      });
-  }, []);
-
-  useEffect(() => {
-    setFilteredData(countryData);
-  }, [countryData]);
-
-  function getCountryData(objects, from, to) {
-    const countryCases = objects.reduce((result, obj) => {
-      const { cases, deaths, popData2019 } = obj;
-      const country = obj.countriesAndTerritories.replace("_", " ");
-      const { day, month, year } = obj;
-      const date = new Date(`${year}-${month}-${day}`);
-
-      if (!result[country]) {
-        result[country] = {
-          country,
-          cases: 0,
-          deaths: 0,
-          totalCases: 0,
-          totalDeaths: 0,
-          population: popData2019,
-        };
-      }
-
-      if (date >= from && date <= to) {
-        result[country].cases += cases;
-        result[country].deaths += deaths;
-      }
-
-      result[country].totalCases += cases;
-      result[country].totalDeaths += deaths;
-      return result;
-    }, {});
-
-    return Object.entries(countryCases).map((country) => {
-      const { totalCases, totalDeaths, population } = country[1];
-      return {
-        ...country[1],
-        casesOn1000: ((totalCases * 1000) / population).toFixed(2),
-        deathsOn1000: ((totalDeaths * 1000) / population).toFixed(2),
-      };
-    });
-  }
+export default function Table({ countryData, startDate, filteredData }) {
+  // console.log(filteredData);
 
   const rows: GridRowsProp = filteredData.map((obj, i) => {
     return {
@@ -122,16 +32,21 @@ export default function Table() {
     },
   ];
 
+  // console.log(filteredData);
+
   return (
     <div style={{ height: "auto", width: "100%" }}>
-      <Filter setFilteredData={setFilteredData} countryData={countryData} />
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 20 } },
-        }}
-      />
+      {filteredData.length > 0 ? (
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          initialState={{
+            pagination: { paginationModel: { pageSize: 20 } },
+          }}
+        />
+      ) : (
+        <p>Nekas netika atrasts</p>
+      )}
     </div>
   );
 }

@@ -15,54 +15,54 @@ export default function Filter({ setFilteredData, countryData }) {
   const [criteriaTo, setCriteriaTo] = useState("");
 
   useEffect(() => {
+    let filteredData = countryData;
+
     if (countryFilter) {
-      setFilteredData(
-        countryData.filter((countryData) =>
-          countryData.country.toLowerCase().match(countryFilter)
-        )
+      console.log("countryFilter");
+      filteredData = filteredData.filter((countryData) =>
+        countryData.country.toLowerCase().match(countryFilter)
       );
     }
 
     if ((criteriaFilter && criteriaFrom) || criteriaTo) {
-      setFilteredData(
-        countryData.filter((countryData) => {
-          switch (criteriaFilter) {
-            case "cases":
-              console.log(criteriaFilter);
-              return criteriaTo
-                ? countryData.cases >= criteriaFrom &&
-                    countryData.cases <= criteriaTo
-                : countryData.cases >= criteriaFrom;
-            case "deaths":
-              return criteriaTo
-                ? countryData.deaths >= criteriaFrom &&
-                    countryData.deaths <= criteriaTo
-                : countryData.deaths >= criteriaFrom;
-            case "totalCases":
-              return criteriaTo
-                ? countryData.totalCases >= criteriaFrom &&
-                    countryData.totalCases <= criteriaTo
-                : countryData.totalCases >= criteriaFrom;
-            case "totalDeaths":
-              return criteriaTo
-                ? countryData.totalDeaths >= criteriaFrom &&
-                    countryData.totalDeaths <= criteriaTo
-                : countryData.totalDeaths >= criteriaFrom;
-            case "casesOn1000":
-              return criteriaTo
-                ? countryData.casesOn1000 >= criteriaFrom &&
-                    countryData.casesOn1000 <= criteriaTo
-                : countryData.casesOn1000 >= criteriaFrom;
-            case "deathsOn1000":
-              return criteriaTo
-                ? countryData.deathsOn1000 >= criteriaFrom &&
-                    countryData.deathsOn1000 <= criteriaTo
-                : countryData.deathsOn1000 >= criteriaFrom;
-          }
-        })
-      );
+      filteredData = filteredData.filter((countryData) => {
+        switch (criteriaFilter) {
+          case "cases":
+            console.log(criteriaFilter);
+            return criteriaTo
+              ? countryData.cases >= criteriaFrom &&
+                  countryData.cases <= criteriaTo
+              : countryData.cases >= criteriaFrom;
+          case "deaths":
+            return criteriaTo
+              ? countryData.deaths >= criteriaFrom &&
+                  countryData.deaths <= criteriaTo
+              : countryData.deaths >= criteriaFrom;
+          case "totalCases":
+            return criteriaTo
+              ? countryData.totalCases >= criteriaFrom &&
+                  countryData.totalCases <= criteriaTo
+              : countryData.totalCases >= criteriaFrom;
+          case "totalDeaths":
+            return criteriaTo
+              ? countryData.totalDeaths >= criteriaFrom &&
+                  countryData.totalDeaths <= criteriaTo
+              : countryData.totalDeaths >= criteriaFrom;
+          case "casesOn1000":
+            return criteriaTo
+              ? countryData.casesOn1000 >= criteriaFrom &&
+                  countryData.casesOn1000 <= criteriaTo
+              : countryData.casesOn1000 >= criteriaFrom;
+          case "deathsOn1000":
+            return criteriaTo
+              ? countryData.deathsOn1000 >= criteriaFrom &&
+                  countryData.deathsOn1000 <= criteriaTo
+              : countryData.deathsOn1000 >= criteriaFrom;
+        }
+      });
     }
-  }, [countryFilter, criteriaFilter, criteriaFrom, criteriaTo]);
+    setFilteredData(filteredData);
+  }, [countryFilter, criteriaFilter, criteriaFrom, criteriaTo, countryData]);
 
   const handleCountryFilterChange = (event) => {
     setCountryFilter(event.target.value);

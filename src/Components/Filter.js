@@ -1,11 +1,3 @@
-import {
-  TextField,
-  Button,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-} from "@mui/material";
 import { useState, useEffect } from "react";
 
 export default function Filter({ setFilteredData, countryData }) {
@@ -88,37 +80,40 @@ export default function Filter({ setFilteredData, countryData }) {
   }
 
   return (
-    <div>
-      <TextField
-        label="Search by country"
+    <div className="filters">
+      <input
+        type="text"
         value={countryFilter}
         onChange={handleCountryFilterChange}
+        placeholder="Search by country"
       />
+      <div className="criteria-filter">
+        <select onChange={handleCriteriaChange}>
+          <option value="cases">Cases</option>
+          <option value="deaths">Deaths</option>
+          <option value="totalCases">Total Cases</option>
+          <option value="totalDeaths">Total Deaths</option>
+          <option value="casesOn1000">Cases on 1000 of citizens</option>
+          <option value="deathsOn1000">Deaths on 1000 of citizens</option>
+        </select>
 
-      <FormControl>
-        <InputLabel>Choose criteria</InputLabel>
-        <Select value={criteriaFilter} onChange={handleCriteriaChange}>
-          <MenuItem value="cases">Cases</MenuItem>
-          <MenuItem value="deaths">Deaths</MenuItem>
-          <MenuItem value="totalCases">Total Cases</MenuItem>
-          <MenuItem value="totalDeaths">Total Deaths</MenuItem>
-          <MenuItem value="casesOn1000">Cases on 1000 of citizens</MenuItem>
-          <MenuItem value="deathsOn1000">Deaths on 1000 of citizens</MenuItem>
-        </Select>
-        <TextField
-          label="from"
+        <input
+          className="input-short"
+          type="text"
           value={criteriaFrom}
           onChange={handleCriteriaFromChange}
+          placeholder="from"
         />
-        <TextField
-          label="to"
+
+        <input
+          className="input-short"
+          type="text"
           value={criteriaTo}
           onChange={handleCriteriaToChange}
+          placeholder="to"
         />
-      </FormControl>
-      <Button variant="contained" color="primary" onClick={clearFilters}>
-        Clear filters
-      </Button>
+      </div>
+      <button onClick={clearFilters}>Clear filters</button>
     </div>
   );
 }

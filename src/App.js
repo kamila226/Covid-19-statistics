@@ -3,13 +3,17 @@ import { useEffect, useState } from "react";
 import Table from "./Components/Table";
 import PeriodPicker from "./Components/PeriodPicker";
 import Filter from "./Components/Filter";
+import FilterCountry from "./Components/FilterCountry";
+import { Chart } from "./Components/Chart.js";
 
 import "react-datepicker/dist/react-datepicker.css";
 
 function App() {
+  const [tableTab, setTableTab] = useState(true);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [rawData, setRawData] = useState([]);
+  const [FilteredRawData, setFilteredRawData] = useState([]);
   const [filteredData, setFilteredData] = useState([
     {
       country: "",
@@ -113,21 +117,51 @@ function App() {
 
   return (
     <div className="App">
-      <PeriodPicker
-        startDate={startDate}
-        setStartDate={setStartDate}
-        endDate={endDate}
-        setEndDate={setEndDate}
-        handleStartDateChange={handleStartDateChange}
-        handleEndDateChange={handleEndDateChange}
-      />
-      <Filter setFilteredData={setFilteredData} countryData={countryData} />
-
-      <Table
-        countryData={countryData}
-        startDate={startDate}
-        filteredData={filteredData}
-      />
+      <ul class="tabrow">
+        <li
+          className={tableTab ? "selected" : ""}
+          onClick={() => setTableTab(true)}
+        >
+          Table
+        </li>
+        <li
+          className={tableTab ? "" : "selected"}
+          onClick={() => setTableTab(false)}
+        >
+          Chart
+        </li>
+      </ul>
+      <div className="container">
+        <PeriodPicker
+          startDate={startDate}
+          setStartDate={setStartDate}
+          endDate={endDate}
+          setEndDate={setEndDate}
+          handleStartDateChange={handleStartDateChange}
+          handleEndDateChange={handleEndDateChange}
+        />
+        {tableTab ? (
+          <>
+            <Filter
+              setFilteredData={setFilteredData}
+              countryData={countryData}
+            />
+            <Table filteredData={filteredData} />
+          </>
+        ) : (
+          <>
+            <FilterCountry
+              setFilteredRawData={setFilteredRawData}
+              rawData={rawData}
+            />
+            <Chart
+              rawData={FilteredRawData}
+              startDate={startDate}
+              endDate={endDate}
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 }

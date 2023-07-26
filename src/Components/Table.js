@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
 import Filter from "./Filter";
+import { blue } from "@mui/material/colors";
 
-export default function Table({ countryData, startDate, filteredData }) {
+export default function Table({ filteredData }) {
   // console.log(filteredData);
 
   const rows: GridRowsProp = filteredData.map((obj, i) => {
@@ -19,20 +20,49 @@ export default function Table({ countryData, startDate, filteredData }) {
   });
 
   const columns: GridColDef[] = [
-    { field: "country", headerName: "Country", width: 150 },
-    { field: "cases", headerName: "Cases", width: 150 },
-    { field: "deaths", headerName: "Deaths", width: 150 },
-    { field: "totalCases", headerName: "Total Cases", width: 150 },
-    { field: "totalDeaths", headerName: "Total Deaths", width: 150 },
-    { field: "casesOn1000", headerName: "Cases on 1000 citizens", width: 150 },
+    {
+      field: "country",
+      headerName: "Country",
+      headerClassName: "table-header",
+      flex: 1,
+    },
+    {
+      field: "cases",
+      headerName: "Cases",
+      headerClassName: "table-header",
+      flex: 1,
+    },
+    {
+      field: "deaths",
+      headerName: "Deaths",
+      headerClassName: "table-header",
+      flex: 1,
+    },
+    {
+      field: "totalCases",
+      headerName: "Total Cases",
+      headerClassName: "table-header",
+      flex: 1,
+    },
+    {
+      field: "totalDeaths",
+      headerName: "Total Deaths",
+      headerClassName: "table-header",
+      flex: 1,
+    },
+    {
+      field: "casesOn1000",
+      headerName: "Cases on 1000 citizens",
+      headerClassName: "table-header",
+      flex: 1,
+    },
     {
       field: "deathsOn1000",
       headerName: "Deaths on 1000 citizens",
-      width: 150,
+      headerClassName: "table-header",
+      flex: 1,
     },
   ];
-
-  // console.log(filteredData);
 
   return (
     <div style={{ height: "auto", width: "100%" }}>
@@ -43,9 +73,13 @@ export default function Table({ countryData, startDate, filteredData }) {
           initialState={{
             pagination: { paginationModel: { pageSize: 20 } },
           }}
+          sx={{
+            fontFamily: "Nunito",
+            fontSize: "1em",
+          }}
         />
       ) : (
-        <p>Nekas netika atrasts</p>
+        <p>Data not found</p>
       )}
     </div>
   );

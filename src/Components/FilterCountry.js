@@ -13,7 +13,7 @@ export default function Filter({ setFilteredRawData, rawData }) {
     }
     console.log(filteredData);
     setFilteredRawData(filteredData);
-  }, [countryFilter]);
+  }, [countryFilter, rawData, setFilteredRawData]);
 
   const countriesSet = new Set();
   rawData.forEach((countryObj) => {
@@ -22,9 +22,13 @@ export default function Filter({ setFilteredRawData, rawData }) {
 
   const countriesArray = Array.from(countriesSet);
 
-  const countriesElements = countriesArray.map((countryName) => {
+  const countriesElements = countriesArray.map((countryName, i) => {
     const country = countryName.replaceAll("_", " ");
-    return <option value={countryName}>{country}</option>;
+    return (
+      <option key={i} value={countryName}>
+        {country}
+      </option>
+    );
   });
 
   const handleCountryFilterChange = (event) => {

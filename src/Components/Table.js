@@ -1,11 +1,6 @@
-import { useEffect, useState } from "react";
 import { DataGrid, GridRowsProp, GridColDef } from "@mui/x-data-grid";
-import Filter from "./Filter";
-import { blue } from "@mui/material/colors";
 
 export default function Table({ filteredData }) {
-  // console.log(filteredData);
-
   const rows: GridRowsProp = filteredData.map((obj, i) => {
     return {
       id: i,

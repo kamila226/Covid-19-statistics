@@ -15,12 +15,17 @@ export default function Filter({ setFilteredData, countryData }) {
         countryData.country.toLowerCase().match(countryFilter)
       );
     }
-
     if ((criteriaFilter && criteriaFrom) || criteriaTo) {
       filteredData = filteredData.filter((countryData) => {
+        // console.log(
+        //   "cases",
+        //   countryData.casesOn1000,
+        //   "criteriaFrom",
+        //   criteriaFrom,
+        //   Number(countryData.casesOn1000) >= Number(criteriaFrom)
+        // );
         switch (criteriaFilter) {
           case "cases":
-            console.log(criteriaFilter);
             return criteriaTo
               ? countryData.cases >= criteriaFrom &&
                   countryData.cases <= criteriaTo
@@ -44,17 +49,26 @@ export default function Filter({ setFilteredData, countryData }) {
             return criteriaTo
               ? countryData.casesOn1000 >= criteriaFrom &&
                   countryData.casesOn1000 <= criteriaTo
-              : countryData.casesOn1000 >= criteriaFrom;
+              : Number(countryData.casesOn1000) >= criteriaFrom;
           case "deathsOn1000":
             return criteriaTo
               ? countryData.deathsOn1000 >= criteriaFrom &&
                   countryData.deathsOn1000 <= criteriaTo
               : countryData.deathsOn1000 >= criteriaFrom;
+          default:
+            return countryData;
         }
       });
     }
     setFilteredData(filteredData);
-  }, [countryFilter, criteriaFilter, criteriaFrom, criteriaTo, countryData]);
+  }, [
+    countryFilter,
+    criteriaFilter,
+    criteriaFrom,
+    criteriaTo,
+    countryData,
+    setFilteredData,
+  ]);
 
   const handleCountryFilterChange = (event) => {
     setCountryFilter(event.target.value);

@@ -67,7 +67,8 @@ function App() {
 
   useEffect(() => {
     setData(getCountryData(startDate, endDate));
-  }, [rawData]);
+    // eslint-disable-next-line
+  }, [rawData, endDate, startDate]);
 
   function getCountryData(from, to) {
     const countryCases = rawData.reduce((result, obj) => {
@@ -117,7 +118,7 @@ function App() {
 
   return (
     <div className="App">
-      <ul class="tabrow">
+      <ul className="tabrow">
         <li
           className={tableTab ? "selected" : ""}
           onClick={() => setTableTab(true)}
